@@ -1,0 +1,77 @@
+
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          zope-destinet
+# Required-Start:    hostname $local_fs $syslog
+# Required-Stop:     hostname $local_fs $syslog
+# Should-Start:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: start the zope zerver for destinet.eu
+# Description:       start the zope zerver for destinet.eu
+### END INIT INFO
+
+RETVAL=0
+SUCMD='su -s /bin/bash edw -c'
+PREFIX='/var/local/destinet/buildout'
+INSTANCES=("zope-instance-translations-test")
+INSTANCES_ZEO=("zope-instance-0" "zope-instance-1" "zope-instance-2" "zope-instance-3" "zope-instance-async")
+
+start_all() {
+    $SUCMD "$PREFIX/bin/zeoserver start"
+    for name in "${INSTANCES_ZEO[@]}"; do
+        $SUCMD "$PREFIX/bin/$name start"
+    done
+    $SUCMD "$PREFIX/bin/haproxy -D -f $PREFIX/haproxy.cfg"
+
+    for name in "${INSTANCES[@]}"; do
+        $SUCMD "$PREFIX/bin/$name start"
+    done
+}
+
+stop_all() {
+    $SUCMD "kill -9 `pidof haproxy`"
+    for name in "${INSTANCES_ZEO[@]}"; do
+        $SUCMD "$PREFIX/bin/$name stop"
+    done
+    $SUCMD "$PREFIX/bin/zeoserver stop"
+
+    for name in "${INSTANCES[@]}"; do
+        $SUCMD "$PREFIX/bin/$name stop"
+    done
+}
+
+status_all() {
+    echo -n "zeoserver: "
+    $PREFIX/bin/zeoserver status
+    for name in "${INSTANCES_ZEO[@]}"; do
+        echo -n "$name: "
+        $PREFIX/bin/$name status
+    done
+
+    for name in "${INSTANCES[@]}"; do
+        echo -n "$name: "
+        $PREFIX/bin/$name status
+    done
+}
+
+case "$1" in
+  start)
+        start_all
+        ;;
+  stop)
+        stop_all
+        ;;
+  status)
+        status_all
+        ;;
+  restart)
+        stop_all
+        start_all
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|status|restart}"
+        RETVAL=1
+esac
+exit $RETVAL
