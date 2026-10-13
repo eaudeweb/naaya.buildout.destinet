@@ -57,5 +57,7 @@ Python 2 Data.fs migration
 
     make migrate DATAFS=<path to Data.fs> INSTANCE=zope-instance-0
 
-Then reindex the catalog from the ZMI: portal_catalog -> Advanced -> Update
-Catalog.
+The last step rebuilds every catalog and packs the database. To rebuild the
+catalogs again later (with ``zeoserver`` running for ZEO client instances)::
+
+    bin/zope-instance-0 run src/naaya/buildout/Naaya/migration/migrate_zodb.py --reindex-only
