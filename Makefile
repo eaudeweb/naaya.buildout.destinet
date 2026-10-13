@@ -14,6 +14,7 @@ bootstrap:
 
 install:
 	bin/buildout
+	mkdir -p var/cache
 	$(NAAYA_BUILDOUT)/fix-buildout.sh
 
 # '-include' so 'make bootstrap' works before src/naaya exists
