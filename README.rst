@@ -1,8 +1,8 @@
 DestiNet buildout
 =================
 
-Zope 5 / Python 3 buildout for destinet.eu. Shared Naaya configuration
-(``base.cfg``, ``zope5-versions.cfg``, migration scripts) comes from the
+Zope 6 / Python 3 buildout for destinet.eu. Shared Naaya configuration
+(``base.cfg``, ``zope6-versions.cfg``, migration scripts) comes from the
 ``python3`` branch of https://github.com/eaudeweb/naaya, checked out in
 ``src/naaya``.
 
