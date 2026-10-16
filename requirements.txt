@@ -1,4 +1,4 @@
-# Same zc.buildout and setuptools pins as src/naaya/buildout/Naaya/zope6-versions.cfg
+# Same zc.buildout and setuptools pins as src/naaya.buildout.naaya/zope6-versions.cfg
 zc.buildout==5.1.2
 setuptools==81.0.0
 packaging==26.0
