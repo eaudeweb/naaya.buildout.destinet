@@ -14,7 +14,7 @@
 
 RETVAL=0
 SUCMD='su -s /bin/bash edw -c'
-PREFIX='/var/local/destinet/buildout'
+PREFIX='/var/local/destinet/destinet.eu'
 INSTANCES=("zope-instance-translations-test")
 INSTANCES_ZEO=("zope-instance-0" "zope-instance-1" "zope-instance-2" "zope-instance-3" "zope-instance-async")
 
@@ -31,7 +31,8 @@ start_all() {
 }
 
 stop_all() {
-    $SUCMD "kill -9 `pidof haproxy`"
+    # only this install's haproxy, not another install's on the same server
+    $SUCMD "pkill -f '[h]aproxy -D -f $PREFIX/haproxy.cfg'"
     for name in "${INSTANCES_ZEO[@]}"; do
         $SUCMD "$PREFIX/bin/$name stop"
     done
