@@ -58,6 +58,26 @@ Running
 haproxy listens on 127.0.0.1:8080 and balances ``zope-instance-0`` to
 ``zope-instance-2``. ``init_destinet`` is the init script used in production.
 
+Docker
+------
+
+The image (Python 3.14, Debian trixie) is built from this directory with the
+shared ``src/naaya.buildout.naaya/pip/Dockerfile``; ``docker-compose.yml`` is
+generated from ``site.cfg`` (ZEO, the instances and haproxy, on the host
+network, so the ports are the ones in ``site.cfg``)::
+
+    make bootstrap
+    make image
+    make compose
+    docker compose up -d
+
+The containers run with the uid and gid of the owner of this directory (``edw``
+on the servers), taken by ``make image``, so they can write ``var/``.
+``secret.cfg`` and ``local.cfg`` are mounted into the containers, which write
+``parts/`` and ``bin/`` from them at start. Cron jobs run in a container, e.g.::
+
+    docker compose run --rm zope-instance-async bin/zope-instance-async run bin/heartbeat
+
 Python 2 Data.fs migration
 --------------------------
 
