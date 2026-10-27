@@ -15,8 +15,8 @@
 RETVAL=0
 SUCMD='su -s /bin/bash edw -c'
 PREFIX='/var/local/destinet/buildout'
-INSTANCES=("zope-instance-translations-test")
-INSTANCES_ZEO=("zope-instance-0" "zope-instance-1" "zope-instance-2" "zope-instance-3" "zope-instance-async")
+INSTANCES=()
+INSTANCES_ZEO=("zope-instance-0" "zope-instance-1" "zope-instance-2" "zope-instance-3")
 
 start_all() {
     $SUCMD "$PREFIX/bin/zeoserver start"
