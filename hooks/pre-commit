@@ -1,0 +1,11 @@
+#!/bin/sh
+# Set the Sentry release in versions.cfg when the buildout configuration changes.
+# Install once per clone: git config core.hooksPath hooks
+name=destinet
+git diff --cached --name-only | grep -qE '^(buildout|versions)\.cfg$' || exit 0
+if ! git diff --quiet -- versions.cfg; then
+    echo "versions.cfg has unstaged changes; stage them first" >&2
+    exit 1
+fi
+sed -i "s/^release = $name@.*/release = $name@$(date +%Y-%m-%dT%H:%M)/" versions.cfg
+git add versions.cfg
