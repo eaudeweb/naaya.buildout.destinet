@@ -1,0 +1,5 @@
+#!/bin/sh
+# A path-limited commit leaves the pre-hook versions.cfg in the index; match it to HEAD.
+if git diff --quiet HEAD -- versions.cfg; then
+    git reset -q -- versions.cfg
+fi
